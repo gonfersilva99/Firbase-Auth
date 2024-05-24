@@ -7,6 +7,7 @@ import TabBarNavigator from "./navigation/TabBarNavigator";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from "./config/firebase.config";
 import React, { useEffect, useState } from "react";
+import LoggedUserProvider from "./context/users";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,17 +23,19 @@ export default function App() {
   }, []);
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        {user ? (
-          <Stack.Screen name="Tab" component={TabBarNavigator} />
-        ) : (
-          <Stack.Screen name="Auth" component={AuthNavigator} />
-        )}
-      </Stack.Navigator>
+      <LoggedUserProvider>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {user ? (
+            <Stack.Screen name="Tab" component={TabBarNavigator} />
+          ) : (
+            <Stack.Screen name="Auth" component={AuthNavigator} />
+          )}
+        </Stack.Navigator>
+      </LoggedUserProvider>
     </NavigationContainer>
   );
 }

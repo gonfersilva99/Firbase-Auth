@@ -1,5 +1,5 @@
 import { View, Text, TextInput, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styles from "../styles/styles";
 import {
   collection,
@@ -17,10 +17,13 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "../config/firebase.config";
+import { LoggedUserContext } from "../context/users";
 
 const Profile = () => {
+  const { loggedUser } = useContext(LoggedUserContext);
   const [animalName, setAnimalName] = useState("");
   const [animalColor, setAnimalColor] = useState("");
+  console.log(loggedUser);
 
   const addAnimal = async () => {
     try {

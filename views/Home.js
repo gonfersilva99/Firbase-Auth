@@ -1,10 +1,13 @@
 import { View, Text, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "../styles/styles";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from "../config/firebase.config";
+import { LoggedUserContext } from "../context/users";
 
 const Home = ({ navigation }) => {
+  const { loggedUser } = useContext(LoggedUserContext);
+  console.log(loggedUser?.email);
   const signOutNow = async () => {
     try {
       const auth = getAuth();
@@ -32,7 +35,7 @@ const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text>Home</Text>
-      <Text>Welcome user</Text>
+      <Text>Welcome {loggedUser?.email}</Text>
       <Pressable onPress={() => signOutNow()} style={styles.btn}>
         <Text>Sign out</Text>
       </Pressable>

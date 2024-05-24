@@ -1,5 +1,5 @@
 import { View, Text, Pressable, TextInput } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styles from "../styles/styles";
 import {
   getAuth,
@@ -10,10 +10,12 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { app } from "../config/firebase.config";
+import { LoggedUserContext } from "../context/users";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { defineLoggedUser } = useContext(LoggedUserContext);
 
   const handleSignIn = async () => {
     try {
@@ -21,6 +23,7 @@ const Login = ({ navigation }) => {
       const userCred = await signInWithEmailAndPassword(auth, email, password);
       await auth.currentUser.reload();
       const user = userCred.user;
+      defineLoggedUser(user);
       if (user) {
         navigation.navigate("Tab", { screen: "Home" });
       }
